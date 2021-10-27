@@ -11,6 +11,9 @@ import com.thikar.products.R
 import com.thikar.products.adapter.ProductListAdapter
 import com.thikar.products.data.ProductItem
 import com.thikar.products.databinding.FragmentCommonBinding
+import com.thikar.products.util.Resource
+import com.thikar.products.util.exhaustive
+import com.thikar.products.util.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -34,16 +37,49 @@ class RecommendedListFragment : Fragment(R.layout.fragment_common) {
                 setHasFixedSize(true)
             }
 
+
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.productList.collect { list ->
-                    val recommendedList: List<ProductItem> = list.filter { it.smartRecommendation }
-                    if (recommendedList.isNotEmpty()) {
+                viewModel.productList1.collect {
+                    val result = it ?: return@collect
+                    if(result is Resource.Loading)
+                    {
+                        progressbar.visibility = View.VISIBLE
+                    }
+                    else{
                         progressbar.visibility = View.GONE
                     }
-                    productListAdapter.submitList(recommendedList)
+
+                    val freqOrderedList: List<ProductItem> = result?.data!!.filter { it.smartRecommendation }
+                    if(freqOrderedList.isNotEmpty()) {
+                        productListAdapter.submitList(freqOrderedList)
+                    }
+                    else {
+                        textviewEmptyLabel.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                viewModel.events.collect { event ->
+                    when (event) {
+                        is ProductViewModel.Event.ShowErrorMessage ->
+                        {
+                            showSnackbar(
+                                getString(
+                                    R.string.could_not_fetch
+                                )
+                            )
+                            textviewEmptyLabel.visibility = View.VISIBLE
+                            progressbar.visibility = View.GONE
+                        }
+                    }.exhaustive
                 }
             }
         }
+    }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.onStart()
     }
 }

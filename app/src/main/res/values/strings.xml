@@ -5,4 +5,9 @@
     <string name="Rs">\u20B9 %1$s</string>
 
     <string name="append_string_with_space">QTY %1$s</string>
+
+    <string name="could_not_fetch">Failed to fetch Response</string>
+    <string name="unknown_error_occurred">An unknown error occurred</string>
+
+
 </resources>

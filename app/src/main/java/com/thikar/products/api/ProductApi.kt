@@ -16,4 +16,8 @@ interface ProductApi {
     @GET("Retailers/4990224/fetchFrequentlyOrderedProduct?retailerId=4990224")
     suspend fun getProductList(): List<ProductItem>
 
+    @Headers("key: $API_KEY")
+    @GET("Retailers/4990224/fetchFrequentlyOrderedProduct?retailerId=4990224")
+    suspend fun getProductList1(): ProductResponse
+
 }
