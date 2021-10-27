@@ -1,6 +1,7 @@
 package com.thikar.products.api
 
 import com.thikar.products.BuildConfig
+import com.thikar.products.data.ProductItem
 import retrofit2.http.GET
 import retrofit2.http.Headers
 
@@ -11,9 +12,8 @@ interface ProductApi {
         const val API_KEY = BuildConfig.key
     }
 
-    @Headers("X-Api-Key: $API_KEY")
+    @Headers("key: $API_KEY")
     @GET("Retailers/4990224/fetchFrequentlyOrderedProduct?retailerId=4990224")
-    suspend fun getProductList(): ProductResponse
-
+    suspend fun getProductList(): List<ProductItem>
 
 }

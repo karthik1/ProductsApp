@@ -1,10 +1,13 @@
 package com.thikar.products.di
 
+import com.bumptech.glide.Glide
+import com.thikar.products.R
 import com.thikar.products.api.ProductApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Response.error
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton

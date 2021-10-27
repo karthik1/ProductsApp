@@ -1,8 +1,8 @@
 package com.thikar.products.api
 
-import com.thikar.products.data.Product
+import com.thikar.products.data.ProductItem
 
-data class ProductResponse(val productList:List<Product>)
+data class ProductResponse(val productItemList:List<ProductItem>)
 
 // SAMPLE RESPONSE
 

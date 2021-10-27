@@ -1,6 +1,6 @@
 package com.thikar.products.data
 
-data class Product(
+data class ProductItem(
     val productName:String,
     val displayText:String,
     val schemeLabelForRetailer:String,
