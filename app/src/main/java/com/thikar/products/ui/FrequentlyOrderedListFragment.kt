@@ -1,7 +1,6 @@
 package com.thikar.products.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,7 +16,6 @@ import com.thikar.products.util.exhaustive
 import com.thikar.products.util.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import javax.annotation.meta.Exhaustive
 
 
 @AndroidEntryPoint
@@ -39,36 +37,22 @@ class FrequentlyOrderedListFragment : Fragment(R.layout.fragment_common) {
                 layoutManager = LinearLayoutManager(requireContext())
                 setHasFixedSize(true)
             }
-//
-//            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-//                viewModel.productList.collect { list ->
-////                    progressbar.visibility = result is Resource.Loading
-//
-//                    val freqOrderedList: List<ProductItem> = list.filter { !it.smartRecommendation }
-//                    if (freqOrderedList.isNotEmpty()) {
-//                        progressbar.visibility = View.GONE
-//                    }
-//                    productListAdapter.submitList(freqOrderedList)
-//                }
-//            }
+
 
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.productList1.collect {
                     val result = it ?: return@collect
-                    if(result is Resource.Loading)
-                    {
+                    if (result is Resource.Loading) {
                         progressbar.visibility = View.VISIBLE
-                    }
-                    else{
+                    } else {
                         progressbar.visibility = View.GONE
                     }
 
-                    val freqOrderedList: List<ProductItem> = result?.data!!.filter { !it.smartRecommendation }
+                    val freqOrderedList: List<ProductItem> =
+                        result?.data!!.filter { !it.smartRecommendation }
                     if(freqOrderedList.isNotEmpty()) {
                         productListAdapter.submitList(freqOrderedList)
-                    }
-                    else {
-                        textviewEmptyLabel.visibility = View.VISIBLE
+                        textviewEmptyLabel.visibility = View.GONE
                     }
                 }
             }
@@ -76,8 +60,7 @@ class FrequentlyOrderedListFragment : Fragment(R.layout.fragment_common) {
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.events.collect { event ->
                     when (event) {
-                        is ProductViewModel.Event.ShowErrorMessage ->
-                        {
+                        is ProductViewModel.Event.ShowErrorMessage -> {
                             showSnackbar(
                                 getString(
                                     R.string.could_not_fetch

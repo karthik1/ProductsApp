@@ -41,29 +41,26 @@ class RecommendedListFragment : Fragment(R.layout.fragment_common) {
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.productList1.collect {
                     val result = it ?: return@collect
-                    if(result is Resource.Loading)
-                    {
+                    if (result is Resource.Loading) {
                         progressbar.visibility = View.VISIBLE
-                    }
-                    else{
+                    } else {
                         progressbar.visibility = View.GONE
                     }
 
-                    val freqOrderedList: List<ProductItem> = result?.data!!.filter { it.smartRecommendation }
+                    val freqOrderedList: List<ProductItem> =
+                        result?.data!!.filter { it.smartRecommendation }
                     if(freqOrderedList.isNotEmpty()) {
                         productListAdapter.submitList(freqOrderedList)
+                        textviewEmptyLabel.visibility = View.GONE
                     }
-                    else {
-                        textviewEmptyLabel.visibility = View.VISIBLE
-                    }
+
                 }
             }
 
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.events.collect { event ->
                     when (event) {
-                        is ProductViewModel.Event.ShowErrorMessage ->
-                        {
+                        is ProductViewModel.Event.ShowErrorMessage -> {
                             showSnackbar(
                                 getString(
                                     R.string.could_not_fetch
