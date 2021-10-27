@@ -48,7 +48,7 @@ class RecommendedListFragment : Fragment(R.layout.fragment_common) {
                     }
 
                     val freqOrderedList: List<ProductItem> =
-                        result?.data!!.filter { it.smartRecommendation }
+                        result.data!!.filter { it.smartRecommendation }
                     if(freqOrderedList.isNotEmpty()) {
                         productListAdapter.submitList(freqOrderedList)
                         textviewEmptyLabel.visibility = View.GONE
