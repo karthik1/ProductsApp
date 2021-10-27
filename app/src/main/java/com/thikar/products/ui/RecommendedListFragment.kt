@@ -43,8 +43,11 @@ class RecommendedListFragment : Fragment(R.layout.fragment_common) {
                     val result = it ?: return@collect
                     if (result is Resource.Loading) {
                         progressbar.visibility = View.VISIBLE
+                        textviewEmptyLabel.visibility = View.GONE
                     } else {
                         progressbar.visibility = View.GONE
+                        textviewEmptyLabel.visibility = View.VISIBLE
+
                     }
 
                     val freqOrderedList: List<ProductItem> =
